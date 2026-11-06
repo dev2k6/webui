@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -51,6 +52,7 @@ function DialogContent({
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & { showCloseButton?: boolean }) {
+  const { t } = useTranslation();
   const modal = React.useContext(DialogModalContext);
   const content = (
     <DialogPrimitive.Content
@@ -65,7 +67,7 @@ function DialogContent({
       {showCloseButton && (
         <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1.5 opacity-70 hover:bg-muted ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
           <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{t('common.close', 'Close')}</span>
         </DialogPrimitive.Close>
       )}
     </DialogPrimitive.Content>

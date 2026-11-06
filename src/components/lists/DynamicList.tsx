@@ -33,6 +33,7 @@ import { getListFields, itemId, itemLabel } from './listQuery';
 import { useDynamicList } from './useDynamicList';
 import { useListActions } from './useListActions';
 import { useListSelection } from './useListSelection';
+import { tSchema } from '@/lib/translateSchema';
 
 interface PendingConfirm {
   title: string;
@@ -108,7 +109,7 @@ function DynamicListView({ viewName, schema, resolved, list }: DynamicListViewPr
 
   const busy = listState.isFetching || actions.pending;
   const selectedCount = selection.allMatching ? (total ?? selection.selectedIds.length) : selection.selectedIds.length;
-  const nameFor = (count: number) => (count === 1 ? list.singularName : list.pluralName);
+  const nameFor = (count: number) => tSchema(count === 1 ? list.singularName : list.pluralName);
 
   const confirmMassAction = (action: RunnableMassAction) => {
     const count = selectedCount;
@@ -126,13 +127,13 @@ function DynamicListView({ viewName, schema, resolved, list }: DynamicListViewPr
     if (action.type === 'delete') {
       setConfirm({
         title: allMatching
-          ? t('list.deleteAllMatchingTitle', 'Delete all matching {{name}}', { name: list.pluralName })
+          ? t('list.deleteAllMatchingTitle', 'Delete all matching {{name}}', { name: tSchema(list.pluralName) })
           : t('list.deleteManyTitle', 'Delete {{count}} {{name}}', { count, name }),
         description: allMatching
           ? t(
               'list.deleteAllMatchingDescription',
               'Are you sure you want to delete ALL {{name}} matching the current filters? This action cannot be undone.',
-              { name: list.pluralName },
+              { name: tSchema(list.pluralName) },
             )
           : t(
               'list.deleteManyDescription',
@@ -200,13 +201,13 @@ function DynamicListView({ viewName, schema, resolved, list }: DynamicListViewPr
     <div className="space-y-3.5">
       <div className="flex flex-wrap items-end justify-between gap-4 px-1 pb-1 pt-3">
         <div className="min-w-0">
-          <h1 className="page-title">{list.title}</h1>
-          {list.subtitle && <p className="mt-1 text-sm text-muted-foreground">{list.subtitle}</p>}
+          <h1 className="page-title">{tSchema(list.title)}</h1>
+          {list.subtitle && <p className="mt-1 text-sm text-muted-foreground">{tSchema(list.subtitle)}</p>}
         </div>
         {canCreate && section && (
           <Button onClick={() => navigate(`/${section}/${viewName}/new`)}>
             <Plus aria-hidden />
-            {t('list.create', 'Create {{name}}', { name: list.singularName })}
+            {t('list.create', 'Create {{name}}', { name: tSchema(list.singularName) })}
           </Button>
         )}
       </div>

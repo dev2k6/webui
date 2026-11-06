@@ -13,6 +13,7 @@ import type { Metric } from '../types/metrics';
 import { headlineRatio } from '../helpers';
 import { toneClasses } from './tone';
 import { TileHeader } from './TileHeader';
+import { tSchema } from '@/lib/translateSchema';
 
 interface HeadlineTileProps {
   headline: Headline & Placement;
@@ -28,10 +29,10 @@ export function HeadlineTile({ headline, className, historySamples }: HeadlineTi
   return (
     <Card
       role="figure"
-      aria-label={headline.title}
+      aria-label={tSchema(headline.title)}
       className={cn('flex min-h-[148px] flex-col gap-3 px-5 pb-5 pt-[18px]', toneClass.surface, className)}
     >
-      <TileHeader icon={headline.icon} title={headline.title} badgeClass={toneClass.badge} />
+      <TileHeader icon={headline.icon} title={tSchema(headline.title)} badgeClass={toneClass.badge} />
       <div
         data-slot="headline-value"
         className="font-display text-[2.75rem] font-[750] leading-none tracking-[-0.035em] tabular-nums"
@@ -39,7 +40,7 @@ export function HeadlineTile({ headline, className, historySamples }: HeadlineTi
         {ratio === null ? t('dashboard.noData', 'No data') : formatPercent(ratio * 100)}
       </div>
       {headline.description && (
-        <p className={cn('text-[13px] leading-relaxed', toneClass.muted)}>{headline.description}</p>
+        <p className={cn('text-[13px] leading-relaxed', toneClass.muted)}>{tSchema(headline.description)}</p>
       )}
     </Card>
   );

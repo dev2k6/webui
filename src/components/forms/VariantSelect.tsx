@@ -11,6 +11,7 @@ import { FieldLabel } from '@/components/forms/FieldRow';
 import { fieldIds, useFieldScope, useFormContext, useInPanel } from '@/components/forms/formContext';
 import { VARIANT_FIELD } from '@/components/forms/formLogic';
 import type { EmbeddedVariant } from '@/lib/embeddedSchema';
+import { tSchema } from '@/lib/translateSchema';
 import { cn } from '@/lib/utils';
 
 const SEGMENTED_MAX_VARIANTS = 4;
@@ -96,7 +97,7 @@ function SegmentedVariants({ id, labelledBy, ariaLabel, variants, value, onChang
               checked ? 'bg-card text-foreground shadow-tile' : 'hover:text-foreground',
             )}
           >
-            {v.label}
+            {tSchema(v.label)}
           </button>
         );
       })}
@@ -114,7 +115,7 @@ function DropdownVariants({ id, labelledBy, ariaLabel, variants, value, onChange
       <SelectContent>
         {variants.map((v) => (
           <SelectItem key={v.name} value={v.name}>
-            {v.label}
+            {tSchema(v.label)}
           </SelectItem>
         ))}
       </SelectContent>

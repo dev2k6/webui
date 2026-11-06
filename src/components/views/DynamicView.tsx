@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { resolveForm, resolveSchema, resolveVariantForm } from '@/lib/schemaResolver';
 import { isEmptyValue, variantLabel } from '@/lib/embeddedSchema';
 import type { Field, Fields, Form, FormField, Schema } from '@/types/schema';
+import { tSchema } from '@/lib/translateSchema';
 
 export interface DynamicViewProps {
   schema: Schema;
@@ -81,13 +82,13 @@ export function DynamicView({ schema, objectName, viewName, data, visibleFields 
       {typeLabel && <Badge variant="default">{typeLabel}</Badge>}
       {sections.map((section) => (
         <section key={section.key} className="tile @container px-5 pb-1.5 sm:px-6">
-          {section.title && <h2 className="section-title pb-1 pt-5">{section.title}</h2>}
+          {section.title && <h2 className="section-title pb-1 pt-5">{tSchema(section.title)}</h2>}
           <dl className={cn('divide-y divide-border', !section.title && 'pt-1')}>
             {section.items.map(({ formField, field }) => (
               <ValueRow
                 key={formField.name}
                 schema={schema}
-                label={formField.label}
+                label={tSchema(formField.label)}
                 description={field.description}
                 type={field.type}
                 value={data[formField.name]}

@@ -21,6 +21,7 @@ import { UnsavedChangesDialog } from '@/components/forms/UnsavedChangesDialog';
 import { formFieldLabels } from '@/components/forms/formLogic';
 import { useDynamicForm, type DynamicFormModel } from '@/components/forms/useDynamicForm';
 import type { RenderableSection } from '@/components/forms/formLogic';
+import { tSchema } from '@/lib/translateSchema';
 import { cn } from '@/lib/utils';
 
 const SECTION_INDEX_MIN = 3;
@@ -39,8 +40,9 @@ function useFormTitle(model: DynamicFormModel): string {
   const { resolved, mode, isSingleton, state, parentForm, variantForm } = model;
   if (!resolved) return '';
   const titleForm = parentForm ?? variantForm;
-  if (isSingleton) return titleForm?.title ?? resolved.object.objectType.description;
-  const name = resolved.list?.singularName ?? resolved.object.objectType.description;
+  if (isSingleton) return tSchema(titleForm?.title ?? resolved.object.objectType.description);
+  const rawName = resolved.list?.singularName ?? resolved.object.objectType.description;
+  const name = tSchema(rawName);
   if (mode === 'create') return t('form.createTitle', 'Create {{name}}', { name });
   const labelProperty = resolved.list?.labelProperty;
   const value = labelProperty ? coerceLabel(state.data[labelProperty], '') : '';

@@ -19,6 +19,7 @@ import type { Layout } from '@/types/schema';
 import { activeViewName, layoutNavNodes, navNodeKey, someLink, viewPath, type NavNode } from './navTree';
 import { SIDEBAR_ID, SidebarNavContext, useSidebarNav } from './sidebarContext';
 import { useLayoutNavigation } from './useLayoutNavigation';
+import { tSchema } from '@/lib/translateSchema';
 
 const itemClass =
   'flex w-full items-center gap-2.5 rounded-[10px] px-2.5 text-left font-medium text-muted-foreground outline-none transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring';
@@ -39,7 +40,7 @@ function NavLink({ node, depth }: { node: Extract<NavNode, { kind: 'link' }>; de
 
   if (!nav.isVisible(node.viewName)) return null;
 
-  const label = node.name || t('sidebar.overview', 'Overview');
+  const label = node.name ? tSchema(node.name) : t('sidebar.overview', 'Overview');
   const content = (
     <>
       {node.icon && <DynamicIcon name={node.icon} className="h-4 w-4 shrink-0" />}
@@ -90,7 +91,7 @@ function NavContainer({ node, depth }: { node: Extract<NavNode, { kind: 'contain
       <CollapsibleTrigger asChild>
         <button type="button" className={cn(itemClass, itemSize(depth))}>
           {node.icon && <DynamicIcon name={node.icon} className="h-4 w-4 shrink-0" />}
-          <span className="truncate">{node.name}</span>
+          <span className="truncate">{tSchema(node.name)}</span>
           <ChevronRight
             aria-hidden="true"
             className="ml-auto h-3.5 w-3.5 shrink-0 opacity-60 transition-transform duration-200 [[data-state=open]>&]:rotate-90"

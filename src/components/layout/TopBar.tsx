@@ -24,6 +24,8 @@ import Logo from '@/components/common/Logo';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EnterpriseUpsell } from '@/components/common/EnterpriseUpsell';
 import { DynamicIcon } from '@/components/common/DynamicIcon';
+import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
+import { tSchema } from '@/lib/translateSchema';
 import { useUIStore } from '@/stores/uiStore';
 import { useAuthStore } from '@/stores/authStore';
 import { buildEndSessionUrl, getPostLogoutRedirectUri } from '@/services/auth/oauth';
@@ -119,6 +121,8 @@ export function TopBar() {
 
         <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
 
+        <LanguageSwitcher />
+
         <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t('toggleTheme', 'Toggle theme')}>
           {theme === 'light' ? (
             <Moon aria-hidden="true" className="h-4 w-4" />
@@ -148,7 +152,7 @@ export function TopBar() {
                       }}
                     >
                       <DynamicIcon name={layout.icon} className="mr-2 h-4 w-4" />
-                      {layout.name}
+                      {tSchema(layout.name)}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuGroup>

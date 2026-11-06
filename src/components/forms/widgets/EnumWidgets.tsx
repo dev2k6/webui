@@ -18,6 +18,7 @@ import { usePermissionCheckers } from '@/hooks/usePermissions';
 import { getEnum } from '@/lib/schemaResolver';
 import { useFormContext } from '@/components/forms/formContext';
 import { RemovablePill } from '@/components/forms/widgets/RemovablePill';
+import { tSchema } from '@/lib/translateSchema';
 import type { ControlProps, WidgetProps } from '@/components/forms/widgets/types';
 import type { EnumVariant, FieldTypeEnum } from '@/types/schema';
 
@@ -44,9 +45,9 @@ export function EnumWidget({ type, value, onChange, readOnly, control }: WidgetP
   const variants = useEnumVariants(type.enumName);
   const options: ComboboxOption[] = variants.map((v) => ({
     value: v.name,
-    label: v.label,
-    description: v.explanation || undefined,
-    keywords: [v.name],
+    label: tSchema(v.label),
+    description: v.explanation ? tSchema(v.explanation) : undefined,
+    keywords: [v.name, v.label],
     marker: v.color ? <ColorDot color={v.color} /> : undefined,
   }));
 
@@ -97,6 +98,8 @@ export function EnumMultiSelect({ enumName, items, onChange, readOnly, minItems,
 
   const checkboxItem = (v: EnumVariant, idPrefix: string) => {
     const id = `${idPrefix}-${v.name.replace(/[^A-Za-z0-9_-]/g, '_')}`;
+    const label = tSchema(v.label);
+    const explanation = v.explanation ? tSchema(v.explanation) : undefined;
     return (
       <div key={v.name} className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted">
         <Checkbox
@@ -107,9 +110,9 @@ export function EnumMultiSelect({ enumName, items, onChange, readOnly, minItems,
         />
         <Label htmlFor={id} className="flex flex-1 cursor-pointer items-center gap-2 text-sm font-normal">
           <ColorDot color={v.color} />
-          {v.label}
+          {label}
         </Label>
-        {v.explanation && <HelpTooltip content={v.explanation} label={v.label} />}
+        {explanation && <HelpTooltip content={explanation} label={label} />}
       </div>
     );
   };
@@ -128,7 +131,14 @@ export function EnumMultiSelect({ enumName, items, onChange, readOnly, minItems,
 
   const query = searchQuery.toLowerCase();
   const filtered = query
-    ? variants.filter((v) => v.label.toLowerCase().includes(query) || v.name.toLowerCase().includes(query))
+    ? variants.filter((v) => {
+        const localizedLabel = tSchema(v.label).toLowerCase();
+        return (
+          localizedLabel.includes(query) ||
+          v.label.toLowerCase().includes(query) ||
+          v.name.toLowerCase().includes(query)
+        );
+      })
     : variants;
 
   return (
@@ -137,7 +147,8 @@ export function EnumMultiSelect({ enumName, items, onChange, readOnly, minItems,
         <div className="flex flex-wrap gap-1.5">
           {items.map((name) => {
             const variant = variants.find((v) => v.name === name);
-            const label = variant?.label ?? name;
+            const rawLabel = variant?.label ?? name;
+            const label = tSchema(rawLabel);
             return (
               <RemovablePill
                 key={name}
