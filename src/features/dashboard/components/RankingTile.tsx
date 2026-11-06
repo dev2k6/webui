@@ -12,6 +12,7 @@ import type { Metric } from '../types/metrics';
 import { formatValue, rankingEntries } from '../helpers';
 import { toneClasses } from './tone';
 import { TileHeader } from './TileHeader';
+import { tSchema } from '@/lib/translateSchema';
 
 interface RankingTileProps {
   ranking: Ranking & Placement;
@@ -28,13 +29,13 @@ export function RankingTile({ ranking, className, historySamples }: RankingTileP
   return (
     <Card
       role="figure"
-      aria-label={ranking.title}
+      aria-label={tSchema(ranking.title)}
       className={cn('flex flex-col gap-3.5 px-5 pb-5 pt-[18px]', toneClass.surface, className)}
     >
       <TileHeader
         icon={ranking.icon}
-        title={ranking.title}
-        description={ranking.description}
+        title={tSchema(ranking.title)}
+        description={ranking.description ? tSchema(ranking.description) : undefined}
         badgeClass={toneClass.badge}
       />
       <ul className="grid gap-2.5">
@@ -43,7 +44,7 @@ export function RankingTile({ ranking, className, historySamples }: RankingTileP
             key={entry.label}
             className="grid grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_minmax(3.5rem,auto)] items-center gap-3 text-[13px]"
           >
-            <span className="truncate">{entry.label}</span>
+            <span className="truncate">{tSchema(entry.label)}</span>
             <span className={cn('h-2 overflow-hidden rounded-full', toneClass.track)} aria-hidden="true">
               <span
                 className="block h-full rounded-full"

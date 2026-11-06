@@ -13,6 +13,7 @@ import { Combobox } from '@/components/ui/combobox';
 import { ObjectPicker } from '@/components/common/ObjectPicker';
 import { getEnum } from '@/lib/schemaResolver';
 import type { Filter, FilterDate, FilterEnum, FilterInteger, FilterObjectId, FilterText, Schema } from '@/types/schema';
+import { tSchema } from '@/lib/translateSchema';
 
 const ENUM_FILTER_COMBOBOX_THRESHOLD = 15;
 const ALL_VALUE = '__all__';
@@ -35,7 +36,7 @@ function LabelledField({ id, label, children }: { id: string; label: string; chi
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="text-[12.5px] font-semibold text-muted-foreground">
-        {label}
+        {tSchema(label)}
       </label>
       {children}
     </div>
@@ -47,7 +48,7 @@ function GroupField({ label, children }: { label: string; children: ReactNode })
   return (
     <div role="group" aria-labelledby={labelId} className="flex flex-col gap-1.5">
       <span id={labelId} className="text-[12.5px] font-semibold text-muted-foreground">
-        {label}
+        {tSchema(label)}
       </span>
       {children}
     </div>
@@ -62,7 +63,7 @@ function TextFilter({ filter, values, onChange }: FilterFieldProps<FilterText>) 
       <Input
         id={id}
         type="search"
-        placeholder={t('list.filterPlaceholder', 'Search {{label}}...', { label: filter.label.toLowerCase() })}
+        placeholder={t('list.filterPlaceholder', 'Search {{label}}...', { label: tSchema(filter.label).toLowerCase() })}
         value={values[filter.field] ?? ''}
         onChange={(e) => onChange(filter.field, e.target.value)}
       />
@@ -83,7 +84,7 @@ function EnumFilter({ schema, filter, values, onChange }: FilterFieldProps<Filte
         <Combobox
           options={[
             { value: ALL_VALUE, label: t('filters.all', 'All') },
-            ...variants.map((v) => ({ value: v.name, label: v.label })),
+            ...variants.map((v) => ({ value: v.name, label: tSchema(v.label) })),
           ]}
           value={value}
           onValueChange={handleChange}
@@ -98,13 +99,13 @@ function EnumFilter({ schema, filter, values, onChange }: FilterFieldProps<Filte
     <LabelledField id={id} label={filter.label}>
       <Select value={value} onValueChange={handleChange}>
         <SelectTrigger id={id}>
-          <SelectValue placeholder={filter.label} />
+          <SelectValue placeholder={tSchema(filter.label)} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={ALL_VALUE}>{t('filters.all', 'All')}</SelectItem>
           {variants.map((v) => (
             <SelectItem key={v.name} value={v.name}>
-              {v.label}
+              {tSchema(v.label)}
             </SelectItem>
           ))}
         </SelectContent>

@@ -10,6 +10,7 @@ import { VariantSelect } from '@/components/forms/VariantSelect';
 import type { EmbeddedVariant } from '@/lib/embeddedSchema';
 import { cn } from '@/lib/utils';
 import type { FieldErrors, FieldValues, RenderableSection } from '@/components/forms/formLogic';
+import { tSchema } from '@/lib/translateSchema';
 
 interface VariantControl {
   variants: readonly EmbeddedVariant[];
@@ -39,14 +40,14 @@ export function FormSections({
   return (
     <>
       {sections.map((section) => (
-        <FormSectionCard key={section.key} id={sectionId?.(section.key)} title={section.title}>
+        <FormSectionCard key={section.key} id={sectionId?.(section.key)} title={tSchema(section.title)}>
           {section.fields.map(({ formField, field }) => {
             if (!field) {
               if (!variant) return null;
               return (
                 <VariantSelect
                   key={formField.name}
-                  label={formField.label}
+                  label={tSchema(formField.label)}
                   variants={variant.variants}
                   value={variant.value}
                   onChange={variant.onChange}

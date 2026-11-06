@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { friendlyName, getActionInfo, getObjectKind, useGlobalSearch } from '@/hooks/useGlobalSearch';
+import { tSchema } from '@/lib/translateSchema';
 import type { SearchIndexEntry } from '@/stores/schemaStore';
 
 function uniqueEntries(entries: SearchIndexEntry[]): Array<[string, SearchIndexEntry]> {
@@ -83,7 +84,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                         <ActionIcon aria-hidden="true" className="h-4 w-4" />
                       </span>
                       <div className="flex flex-1 flex-col overflow-hidden">
-                        <span className="truncate font-medium">{friendlyName(entry.text)}</span>
+                        <span className="truncate font-medium">{tSchema(friendlyName(entry.text))}</span>
                         <span className="truncate text-xs text-dim">{entry.breadcrumb}</span>
                       </div>
                       <span className="ml-auto shrink-0 pl-2 text-xs font-medium text-dim">{actionLabel}</span>

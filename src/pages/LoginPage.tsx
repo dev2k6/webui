@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Loader2 } from 'lucide-react';
 
 import Logo from '@/components/common/Logo';
+import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +47,9 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 py-10">
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+        <LanguageSwitcher />
+      </div>
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(48rem_22rem_at_50%_-4rem,var(--highlight),transparent_72%)]"
         aria-hidden="true"

@@ -11,6 +11,7 @@ import { Info } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { HelpTooltip } from '@/components/common/HelpTooltip';
 import { ChartTooltipContent, getChartColor } from '@/components/ui/chart';
+import { tSchema } from '@/lib/translateSchema';
 import type { Chart as ChartSchema, Placement } from '../types/schema';
 import type { Metric, Period } from '../types/metrics';
 import { bucketTimestamps, bucketValues, getBucketCount, formatTimeTick, formatValue } from '../helpers';
@@ -85,6 +86,7 @@ export function DashboardChart({ chart, historySamples, historyWindow, period, c
           return (
             <Line
               key={key}
+              name={tSchema(s.label)}
               type="monotone"
               dataKey={key}
               stroke={color}
@@ -101,6 +103,7 @@ export function DashboardChart({ chart, historySamples, historyWindow, period, c
           return (
             <Area
               key={key}
+              name={tSchema(s.label)}
               type="monotone"
               dataKey={key}
               stroke={color}
@@ -117,6 +120,7 @@ export function DashboardChart({ chart, historySamples, historyWindow, period, c
           return (
             <Bar
               key={key}
+              name={tSchema(s.label)}
               dataKey={key}
               fill={color}
               radius={chart.stacked ? 0 : [4, 4, 0, 0]}
@@ -188,13 +192,15 @@ export function DashboardChart({ chart, historySamples, historyWindow, period, c
   return (
     <Card
       role="figure"
-      aria-label={chart.title}
+      aria-label={tSchema(chart.title)}
       className={cn('flex flex-col gap-3 px-5 pb-3.5 pt-[18px]', toneClass.surface, className)}
     >
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <div className="flex min-w-0 items-center gap-2">
-          <h2 className="section-title truncate">{chart.title}</h2>
-          {chart.description && <HelpTooltip content={chart.description} label={chart.title} icon={Info} />}
+          <h2 className="section-title truncate">{tSchema(chart.title)}</h2>
+          {chart.description && (
+            <HelpTooltip content={tSchema(chart.description)} label={tSchema(chart.title)} icon={Info} />
+          )}
         </div>
         {chart.series.length > 0 && (
           <ul className={cn('flex flex-wrap gap-x-3.5 gap-y-1 text-[12.5px]', toneClass.muted)}>
@@ -205,7 +211,7 @@ export function DashboardChart({ chart, historySamples, historyWindow, period, c
                   className="size-2 shrink-0 rounded-full"
                   style={{ backgroundColor: getChartColor(i) }}
                 />
-                {s.label}
+                {tSchema(s.label)}
               </li>
             ))}
           </ul>

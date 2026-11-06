@@ -11,6 +11,7 @@ import { DynamicIcon } from '@/components/common/DynamicIcon';
 import { LineChart, Line } from 'recharts';
 import { Card } from '@/components/ui/card';
 import { HelpTooltip } from '@/components/common/HelpTooltip';
+import { tSchema } from '@/lib/translateSchema';
 import type { Card as CardSchema, Placement } from '../types/schema';
 import type { Metric } from '../types/metrics';
 import { cardValue, deltaSentiment, formatValue, sparklineData, computeDelta } from '../helpers';
@@ -91,15 +92,17 @@ export function StatCard({ card, className, historySamples, historyWindow }: Sta
   return (
     <Card
       role="group"
-      aria-label={card.title}
+      aria-label={tSchema(card.title)}
       className={cn('flex min-h-[148px] flex-col gap-2.5 px-5 pb-4 pt-[18px]', toneClass.surface, className)}
     >
       <div className={cn('flex min-w-0 items-center gap-2.5 text-[13px] font-medium', toneClass.muted)}>
         <span className={cn('grid size-9 shrink-0 place-items-center rounded-[11px]', toneClass.badge)}>
           <DynamicIcon name={card.icon} fallback={HelpCircle} className="size-[17px]" />
         </span>
-        <span className="min-w-0 truncate">{card.title}</span>
-        {card.description && <HelpTooltip content={card.description} label={card.title} icon={Info} />}
+        <span className="min-w-0 truncate">{tSchema(card.title)}</span>
+        {card.description && (
+          <HelpTooltip content={tSchema(card.description)} label={tSchema(card.title)} icon={Info} />
+        )}
       </div>
 
       <div

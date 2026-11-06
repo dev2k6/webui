@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useDisplayName } from '@/data/objectOptions';
 import { formatDuration, formatNumber, formatSize } from '@/lib/format';
 import { getEnumVariant } from '@/lib/schemaResolver';
+import { tSchema } from '@/lib/translateSchema';
 import { SECRET_MASK } from '@/lib/jmapUtils';
 import { cn } from '@/lib/utils';
 import { isMultilineFormat } from '@/lib/embeddedSchema';
@@ -118,7 +119,10 @@ export function ObjectIdValue({
 }
 
 export function ScalarLabel({ schema, type, value }: { schema: Schema; type: ScalarType; value: string }) {
-  if (type.type === 'enum') return <>{getEnumVariant(schema, type.enumName, value)?.label ?? value}</>;
+  if (type.type === 'enum') {
+    const variant = getEnumVariant(schema, type.enumName, value);
+    return <>{variant ? tSchema(variant.label) : value}</>;
+  }
   if (type.type === 'objectId')
     return <ObjectIdValue schema={schema} objectName={type.objectName} id={value} variant="compact" />;
   return <>{value}</>;

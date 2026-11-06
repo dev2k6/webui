@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { ResolvedItemAction } from './listActions';
+import { tSchema } from '@/lib/translateSchema';
 
 type NavigateAction = Extract<ResolvedItemAction, { kind: 'navigate' }>;
 type MutationAction = Extract<ResolvedItemAction, { kind: 'mutation' }>;
@@ -58,14 +59,14 @@ export function RowActions({ actions, label, hrefFor, onMutation, onLocked, disa
                 }
                 onSelect={() => onMutation(entry)}
               >
-                {entry.action.label}
+                {tSchema(entry.action.label)}
               </DropdownMenuItem>
             );
           }
           if (entry.locked) {
             return (
               <DropdownMenuItem key={entry.key} onSelect={onLocked}>
-                {entry.label}
+                {tSchema(entry.label)}
                 <Lock className="ml-auto h-3 w-3 text-dim" aria-hidden />
                 <span className="sr-only">
                   {t('enterprise.featureDisabled', 'This feature requires an Enterprise license.')}
@@ -77,7 +78,7 @@ export function RowActions({ actions, label, hrefFor, onMutation, onLocked, disa
           if (!href) return null;
           return (
             <DropdownMenuItem key={entry.key} asChild>
-              <Link to={href}>{entry.label}</Link>
+              <Link to={href}>{tSchema(entry.label)}</Link>
             </DropdownMenuItem>
           );
         })}

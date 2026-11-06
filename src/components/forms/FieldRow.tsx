@@ -21,6 +21,7 @@ import { resolveObject } from '@/lib/schemaResolver';
 import { cn } from '@/lib/utils';
 import type { ControlProps } from '@/components/forms/widgets/types';
 import type { Field, FormField } from '@/types/schema';
+import { tSchema } from '@/lib/translateSchema';
 
 const ARIA_REQUIRED_TYPES = new Set(['string', 'number', 'enum', 'blobId']);
 
@@ -46,7 +47,7 @@ export function FieldLabel({ id, htmlFor, label, marker, locked }: FieldLabelPro
   return (
     <div className="flex items-center gap-1.5">
       <Label id={id} htmlFor={htmlFor} className="text-[13.5px] font-semibold leading-snug">
-        {label}
+        {tSchema(label)}
         {marker === 'required' && (
           <span className="ml-1 text-brand-text" aria-hidden="true">
             *
@@ -159,7 +160,10 @@ export function FieldRow({ field, formField, value, onChange, error, readOnly: f
         />
         {field.description && (
           <div id={ids.descriptionId}>
-            <Markdown source={field.description} className="text-[12.5px] leading-relaxed text-muted-foreground" />
+            <Markdown
+              source={tSchema(field.description)}
+              className="text-[12.5px] leading-relaxed text-muted-foreground"
+            />
           </div>
         )}
       </div>

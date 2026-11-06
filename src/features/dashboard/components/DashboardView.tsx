@@ -17,6 +17,7 @@ import { useLiveMetricsStore } from '../stores/liveMetricsStore';
 import { useClusterNodes, useHistoryMetrics } from '../queries';
 import { useCanAccess } from '@/hooks/usePermissions';
 import { errorMessage } from '@/lib/jmapErrors';
+import { tSchema } from '@/lib/translateSchema';
 import {
   collectHistoryMetricIds,
   collectLiveMetricIds,
@@ -144,13 +145,13 @@ export function DashboardView({ dashboardId, section }: DashboardViewProps) {
             <TabsList className="max-w-full justify-start overflow-x-auto">
               {dashboards.map((d) => (
                 <TabsTrigger key={d.id} value={d.id}>
-                  {d.label}
+                  {tSchema(d.label)}
                 </TabsTrigger>
               ))}
             </TabsList>
           </Tabs>
         )}
-        {dashboards.length === 1 && <h1 className="page-title">{dashboard.label}</h1>}
+        {dashboards.length === 1 && <h1 className="page-title">{tSchema(dashboard.label)}</h1>}
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {showNodeSelector && <NodeSelector nodes={nodes} value={nodeId} onChange={setNodeId} />}

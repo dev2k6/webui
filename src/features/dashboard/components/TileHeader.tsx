@@ -7,6 +7,7 @@
 import { HelpCircle, Info } from 'lucide-react';
 import { DynamicIcon } from '@/components/common/DynamicIcon';
 import { HelpTooltip } from '@/components/common/HelpTooltip';
+import { tSchema } from '@/lib/translateSchema';
 import { cn } from '@/lib/utils';
 
 export function TileHeader({
@@ -20,6 +21,9 @@ export function TileHeader({
   description?: string;
   badgeClass: string;
 }) {
+  const translatedTitle = tSchema(title);
+  const translatedDescription = description ? tSchema(description) : undefined;
+
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       {icon && (
@@ -27,8 +31,8 @@ export function TileHeader({
           <DynamicIcon name={icon} fallback={HelpCircle} className="size-[17px]" />
         </span>
       )}
-      <h2 className="section-title truncate">{title}</h2>
-      {description && <HelpTooltip content={description} label={title} icon={Info} />}
+      <h2 className="section-title truncate">{translatedTitle}</h2>
+      {translatedDescription && <HelpTooltip content={translatedDescription} label={translatedTitle} icon={Info} />}
     </div>
   );
 }
